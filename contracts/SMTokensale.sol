@@ -2,7 +2,7 @@ pragma solidity >=0.4.21 <0.6.0;
 import "./SMToken.sol";
 
 contract SMTokensale{
-	address admin;//We have not declared admin as public because we dont want this address to be exposed.
+	address payable admin;//We have not declared admin as public because we dont want this address to be exposed.
 	SMToken public tokenContract;//SMToken is a datatype of the type of our SMToken.sol contract
 	//so tokenContract is of the type SMToken
 	uint256 public tokenPrice; // As we have written public we will get the function names tokenPrice() for free. we dont need to write it.which will return the value to tokenPrice whenever we ask for it in the test
@@ -32,5 +32,14 @@ contract SMTokensale{
 		tokensSold += _numberOfTokens;
 		//trigger sell event 
 		emit Sell(msg.sender , _numberOfTokens);
+	}
+	//Ending the SMToken Sale
+	function endSale() public {
+		//Require the admin
+		require (msg.sender == admin);
+		//Transfer remaining SMTokens to admin
+		require (tokenContract.transfer(admin,tokenContract.balanceOf(address(this ))));		
+		//Destroy contract
+		selfdestruct(admin);
 	}
 }

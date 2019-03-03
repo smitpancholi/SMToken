@@ -59,4 +59,26 @@ contract('SMTokensale',function(accounts){
 			assert(error.message.indexOf('revert') >= 0, 'cannot purchase token more than existing amount');
 		});
 	});
+
+	it('ends the token sale',function(){
+		return SMToken.deployed().then(function(instance){
+			tokenInstance = instance;
+			return SMTokensale.deployed();
+		}).then(function(instance){
+			tokenSaleInstance = instance;
+			//try to end the token sale from other than admin account i.e buyer
+			return tokenSaleInstance.endSale({ from : buyer });
+		}).then(assert.fail).catch(function(error){
+			assert(error.message.indexOf('revert' >= 0 , 'must be admin to end the sale'));
+			//end sale as admin
+			return tokenSaleInstance.endSale({ from : admin });
+		}).then(function(receipt){
+			return tokenInstance.balanceOf(admin);
+		}).then(function(balance){
+			assert.equal(balance.toNumber(),999990,'it returns all unsold SM tokens to the admin');
+			return tokenSaleInstance.tokenPrice();
+		}).then(function(price){
+			assert.equal(price.toNumber(),0,'it resets the token price to default');
+		});
+	});
 })
