@@ -38,8 +38,8 @@ contract SMTokensale{
 		//Require the admin
 		require (msg.sender == admin);
 		//Transfer remaining SMTokens to admin
-		require (tokenContract.transfer(admin,tokenContract.balanceOf(address(this ))));		
+		require (tokenContract.transfer(admin,tokenContract.balanceOf(address(this))));		
 		//Destroy contract
-		selfdestruct(admin);
+		//selfdestruct(admin);
 	}
 }

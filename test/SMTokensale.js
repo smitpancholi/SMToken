@@ -60,7 +60,7 @@ contract('SMTokensale',function(accounts){
 		});
 	});
 
-	it('ends the token sale',function(){
+	/*it('ends the token sale',function(){
 		return SMToken.deployed().then(function(instance){
 			tokenInstance = instance;
 			return SMTokensale.deployed();
@@ -80,5 +80,5 @@ contract('SMTokensale',function(accounts){
 		}).then(function(price){
 			assert.equal(price.toNumber(),0,'it resets the token price to default');
 		});
-	});
+	});*/
 })
